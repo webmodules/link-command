@@ -12,9 +12,9 @@ import NativeCommand = require('native-command');
  */
 
 var closest = require('component-closest');
-var currentRange = require('current-range');
-var unwrapNode = require('unwrap-node');
 var wordAtCaret = require('word-at-caret');
+var currentRange = require('current-range');
+var currentSelection = require('current-selection');
 var debug = require('debug')('link-command');
 
 /**
@@ -44,27 +44,36 @@ class LinkCommand implements Command {
   }
 
   execute(range?: Range, value?: any): void {
+    var isSel: boolean = false;
+    var sel: Selection = currentSelection(this.document);
     if (null != range && !(range instanceof Range)) {
       value = range;
       range = null;
     }
-    if (!range) range = currentRange(this.document);
+    if (!range) {
+      range = currentRange(this.document);
+      isSel = true;
+    }
     if (!range) return;
-    var a: Node;
+    var command: Command;
 
     if (this.queryState(range)) {
+      command = this.unlink;
+      value = null;
+
       if (range.collapsed) {
         // no selection, so manually traverse up the DOM and find the A node
-        a = closest(range.commonAncestorContainer, 'a', true);
+        var a: Node = closest(range.commonAncestorContainer, 'a', true);
         if (a) {
-          debug('manually unwrapping node %o', a);
-          copyRange(range, unwrapNode(a));
+          debug('selecting A node contents %o', a);
+          range.selectNodeContents(a);
         }
-      } else {
-        // leverage native "unlink" if there's a selection
-        this.unlink.execute(range);
       }
+
     } else {
+      command = this.createLink;
+      if (!value) value = this.href;
+
       if (range.collapsed) {
         debug('finding surrounding word at caret for collapsed Range');
         // upon a collapsed Range, we want to find the surrounding "word" that
@@ -76,8 +85,18 @@ class LinkCommand implements Command {
         }
       }
 
-      this.createLink.execute(range, value || this.href);
     }
+
+    if (isSel) {
+      // if no Range was explicitly passed in, then augment the current Selection
+      // in the case that we modified the range (collapsd), so that native
+      // browser selection works out properly after the command is executed.
+      sel.removeAllRanges();
+      sel.addRange(range);
+      range = null;
+    }
+
+    command.execute(range, value);
   }
 
   queryEnabled(range?: Range): boolean {
