@@ -67,6 +67,49 @@ describe('LinkCommand', function () {
         assert.equal('<p>hello <a href="#">world</a></p>', div.innerHTML);
       });
 
+      it('should remove an A node around current Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>hel<a href="#">lo world</a></p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set up current Selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.lastChild.firstChild, 0);
+        range.setEnd(div.lastChild.lastChild.firstChild, 5);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        link.execute();
+
+        assert.equal('<p>hello wo<a href="#">rld</a></p>', div.innerHTML);
+      });
+
+      it('should remove an A node around collapsed Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>hel<a href="#">lo world</a></p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set up current Selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.lastChild.firstChild, 5);
+        range.setEnd(div.lastChild.lastChild.firstChild, 5);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        link.execute();
+
+        assert.equal('<p>hello world</p>', div.innerHTML);
+      });
+
     });
 
     describe('execute(link: string)', function () {
@@ -151,6 +194,41 @@ describe('LinkCommand', function () {
         link.execute(range);
 
         assert.equal('<p>foo <a href="#">bar</a> baz</p>', div.innerHTML);
+      });
+
+      it('should remove an A node around Range', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>h<a href="#">e</a>llo</p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // create Range
+        var range = document.createRange();
+        range.setStart(div.firstChild.childNodes[1].firstChild, 0);
+        range.setEnd(div.firstChild.childNodes[1].firstChild, 1);
+
+        var link = new LinkCommand();
+        link.execute(range);
+
+        assert.equal('<p>hello</p>', div.innerHTML);
+      });
+
+      it('should remove an A node around collapsed Range', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>foo <a href="#">bar</a> baz</p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // create Range
+        var range = document.createRange();
+        range.setStart(div.firstChild.childNodes[1].firstChild, 1);
+        range.setEnd(div.firstChild.childNodes[1].firstChild, 1);
+        assert(range.collapsed);
+
+        var link = new LinkCommand();
+        link.execute(range);
+
+        assert.equal('<p>foo bar baz</p>', div.innerHTML);
       });
 
     });
