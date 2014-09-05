@@ -86,7 +86,7 @@ describe('LinkCommand', function () {
         // set up current Selection
         var range = document.createRange();
         range.setStart(div.lastChild.lastChild.firstChild, 0);
-        range.setEnd(div.lastChild.lastChild.firstChild, 5);
+        range.setEnd(div.lastChild.lastChild.firstChild, 8);
 
         var sel = window.getSelection();
         sel.removeAllRanges();
@@ -96,11 +96,11 @@ describe('LinkCommand', function () {
         link.execute();
 
         // test that we have the expected HTML at this point
-        assert.equal('<p>hello wo<a href="#">rld</a></p>', div.innerHTML);
+        assert.equal('<p>hello world</p>', div.innerHTML);
 
         // test that the current Selection contains text that was in the A
         sel = window.getSelection();
-        assert.equal('lo wo', sel.getRangeAt(0).toString());
+        assert.equal('lo world', sel.getRangeAt(0).toString());
       });
 
       it('should remove an A node around collapsed Selection', function () {
