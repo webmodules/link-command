@@ -42,6 +42,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute();
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>h<a href="#">e</a>llo</p>', div.innerHTML);
       });
 
@@ -64,6 +65,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute();
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>hello <a href="#">world</a></p>', div.innerHTML);
       });
 
@@ -85,6 +87,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute();
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>hello wo<a href="#">rld</a></p>', div.innerHTML);
       });
 
@@ -107,6 +110,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute();
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>hello world</p>', div.innerHTML);
       });
 
@@ -132,6 +136,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute('/e');
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>h<a href="/e">e</a>llo</p>', div.innerHTML);
       });
 
@@ -154,6 +159,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute('/hello');
 
+        // test that we have the expected HTML at this point
         assert.equal('<p><a href="/hello">hello</a> world</p>', div.innerHTML);
       });
 
@@ -175,6 +181,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range);
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>h<a href="#">e</a>llo</p>', div.innerHTML);
       });
 
@@ -193,6 +200,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range);
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>foo <a href="#">bar</a> baz</p>', div.innerHTML);
       });
 
@@ -210,6 +218,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range);
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>hello</p>', div.innerHTML);
       });
 
@@ -228,6 +237,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range);
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>foo bar baz</p>', div.innerHTML);
       });
 
@@ -249,6 +259,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range, 'http://foo.com');
 
+        // test that we have the expected HTML at this point
         assert.equal('<p>h<a href="http://foo.com">ell</a>o</p>', div.innerHTML);
       });
 
@@ -267,6 +278,7 @@ describe('LinkCommand', function () {
         var link = new LinkCommand();
         link.execute(range, 'http://foo.org');
 
+        // test that we have the expected HTML at this point
         assert.equal('<p><a href="http://foo.org">foo</a> bar baz</p>', div.innerHTML);
       });
 
