@@ -220,6 +220,9 @@ describe('LinkCommand', function () {
 
         // test that we have the expected HTML at this point
         assert.equal('<p>hello</p>', div.innerHTML);
+
+        // test that the Range contains the text where the A used to be
+        assert.equal('e', range.toString());
       });
 
       it('should remove an A node around collapsed Range', function () {
@@ -239,6 +242,9 @@ describe('LinkCommand', function () {
 
         // test that we have the expected HTML at this point
         assert.equal('<p>foo bar baz</p>', div.innerHTML);
+
+        // test that the Range contains the text where the A used to be
+        assert.equal('bar', range.toString());
       });
 
     });

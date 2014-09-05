@@ -58,7 +58,7 @@ class LinkCommand implements Command {
         a = closest(range.commonAncestorContainer, 'a', true);
         if (a) {
           debug('manually unwrapping node %o', a);
-          unwrapNode(a);
+          copyRange(range, unwrapNode(a));
         }
       } else {
         // leverage native "unlink" if there's a selection
@@ -69,11 +69,10 @@ class LinkCommand implements Command {
         debug('finding surrounding word at caret for collapsed Range');
         // upon a collapsed Range, we want to find the surrounding "word" that
         // the cursor is touching, and then augment the Range to surround the word
-        var r2: Range = wordAtCaret(range.endContainer, range.endOffset);
-        if (r2) {
-          debug('found surrounding word: %o', r2.toString());
-          range.setStart(r2.startContainer, r2.startOffset);
-          range.setEnd(r2.endContainer, r2.endOffset);
+        var wordRange: Range = wordAtCaret(range.endContainer, range.endOffset);
+        if (wordRange) {
+          debug('found surrounding word: %o', wordRange.toString());
+          copyRange(range, wordRange);
         }
       }
 
@@ -92,6 +91,14 @@ class LinkCommand implements Command {
     var a = closest(range.commonAncestorContainer, 'a', true);
     return !! a;
   }
+}
+
+// TODO: move out into standalone module?
+function copyRange (source: Range, target: Range) {
+  debug('copyRange(%o, %o)', source, target);
+  if (!target) return;
+  source.setStart(target.startContainer, target.startOffset);
+  source.setEnd(target.endContainer, target.endOffset);
 }
 
 export = LinkCommand;
