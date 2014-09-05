@@ -74,13 +74,6 @@ class LinkCommand implements Command {
       }
 
       this.createLink.execute(range, value || this.href);
-
-      // now we need to find the newly created A node and select it with the Range
-      a = range.startContainer.previousSibling;
-      if (a) {
-        debug('selecting A node contents with Range %o', a);
-        range.selectNodeContents(a);
-      }
     }
   }
 
