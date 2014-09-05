@@ -45,6 +45,28 @@ describe('LinkCommand', function () {
         assert.equal('<p>h<a href="#">e</a>llo</p>', div.innerHTML);
       });
 
+      it('should insert an A node around word at collapsed Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>hello world</p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set up current Selection
+        var range = document.createRange();
+        range.setStart(div.firstChild.firstChild, 8);
+        range.setEnd(div.firstChild.firstChild, 8);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        link.execute();
+
+        assert.equal('<p>hello <a href="#">world</a></p>', div.innerHTML);
+      });
+
     });
 
     describe('execute(link: string)', function () {
@@ -68,6 +90,28 @@ describe('LinkCommand', function () {
         link.execute('/e');
 
         assert.equal('<p>h<a href="/e">e</a>llo</p>', div.innerHTML);
+      });
+
+      it('should insert an A node around word at collapsed Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>hello world</p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set up current Selection
+        var range = document.createRange();
+        range.setStart(div.firstChild.firstChild, 1);
+        range.setEnd(div.firstChild.firstChild, 1);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        link.execute('/hello');
+
+        assert.equal('<p><a href="/hello">hello</a> world</p>', div.innerHTML);
       });
 
     });

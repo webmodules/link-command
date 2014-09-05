@@ -44,6 +44,10 @@ class LinkCommand implements Command {
   }
 
   execute(range?: Range, value?: any): void {
+    if (null != range && !(range instanceof Range)) {
+      value = range;
+      range = null;
+    }
     if (!range) range = currentRange(this.document);
     if (!range) return;
     var a: Node;
