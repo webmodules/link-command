@@ -33,7 +33,7 @@ class LinkCommand implements Command {
   public document: Document;
   public createLink: Command;
   public unlink: Command;
-  public href: String;
+  public href: string;
 
   constructor(doc?: Document) {
     this.document = doc || document;
