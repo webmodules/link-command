@@ -1,15 +1,15 @@
-native-command
+link-command
 ==============
-### `document.execCommand()` wrapper implementing the Command interface
+### "createLink" and "unlink" native commands packaged as a Command
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/native-command.svg)](https://saucelabs.com/u/native-command)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/link-command.svg)](https://saucelabs.com/u/link-command)
 
-[![Build Status](https://travis-ci.org/webmodules/native-command.svg?branch=master)](https://travis-ci.org/webmodules/native-command)
+[![Build Status](https://travis-ci.org/webmodules/link-command.svg?branch=master)](https://travis-ci.org/webmodules/link-command)
 
 
 Installation
 ------------
 
 ``` bash
-$ npm install native-command
+$ npm install link-command
 ```
