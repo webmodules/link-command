@@ -15,6 +15,7 @@ var closest = require('component-closest');
 var wordAtCaret = require('word-at-caret');
 var currentRange = require('current-range');
 var currentSelection = require('current-selection');
+var domIterator = require('dom-iterator');
 var debug = require('debug')('link-command');
 
 /**
@@ -107,8 +108,28 @@ class LinkCommand implements Command {
   queryState(range?: Range): boolean {
     if (!range) range = currentRange(this.document);
     if (!range) return false;
-    var a = closest(range.commonAncestorContainer, 'a', true);
-    return !! a;
+    //console.log(range);
+    //console.log(range.startContainer, range.endContainer);
+
+    var next = range.startContainer;
+    var end = <any>range.endContainer;
+
+    var iterator = domIterator(next)
+      .revisit(false);
+
+    while (next) {
+      //console.log(next); // next textnodes after node
+      var a = closest(next, 'a', true);
+      //console.log(a);
+      //if (!closest(next, 'a', true)) {
+      if (!a) {
+        return false;
+      }
+      if (end.contains(next)) break;
+      next = iterator.next(3 /* Node.TEXT_NODE */);
+    }
+
+    return true;
   }
 }
 

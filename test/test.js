@@ -501,6 +501,79 @@ describe('LinkCommand', function () {
         sel = window.getSelection();
         assert.equal(0, sel.rangeCount);
       });
+
+      it('should return `true` when Range spans across multiple A elements', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<a>hello</a><a>world</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.firstChild.firstChild, 4);
+        range.setEnd(div.lastChild.firstChild, 1);
+        assert.equal('ow', range.toString());
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
+      it('should return `true` when Range spans across multiple P elements containing As', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p><a>hello</a></p><p><a>world</a></p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.firstChild.firstChild.firstChild, 2);
+        range.setEnd(div.lastChild.firstChild.firstChild, 2);
+        assert.equal('llowo', range.toString());
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
+      it('should return `false` when Range spans across multiple P elements, *some* containing As', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p>hello</p><p><a>world</a></p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.firstChild.firstChild, 2);
+        range.setEnd(div.lastChild.firstChild.firstChild, 2);
+        assert.equal('llowo', range.toString());
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(false === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
     });
 
   });
