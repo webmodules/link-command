@@ -328,6 +328,44 @@ describe('LinkCommand', function () {
 
     describe('queryEnabled()', function () {
 
+      it('should return `true` when outside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.firstChild, 1);
+        range.setEnd(div.firstChild, 3);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled());
+      });
+
+      it('should return `true` when collapsed outside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.firstChild, 1);
+        range.setEnd(div.firstChild, 1);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled());
+      });
+
       it('should return `true` when inside an A', function () {
         div = document.createElement('div');
         div.innerHTML = 'hello <a href="#">world!</a>';
@@ -364,6 +402,104 @@ describe('LinkCommand', function () {
 
         var link = new LinkCommand();
         assert(true === link.queryEnabled());
+      });
+
+    });
+
+    describe('queryEnabled(range: Range)', function () {
+
+      it('should return `true` when Range is outside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // setup Range
+        var range = document.createRange();
+        range.setStart(div.firstChild, 1);
+        range.setEnd(div.firstChild, 3);
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
+      it('should return `true` when Range is collapsed outside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // setup Range
+        var range = document.createRange();
+        range.setStart(div.firstChild, 1);
+        range.setEnd(div.firstChild, 1);
+        assert(range.collapsed);
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
+      it('should return `true` when Range is inside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.firstChild, 1);
+        range.setEnd(div.lastChild.firstChild, 5);
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
+      });
+
+      it('should return `true` when Range is collapsed inside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.firstChild, 4);
+        range.setEnd(div.lastChild.firstChild, 4);
+        assert(range.collapsed);
+
+        // clear Selection
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
       });
 
     });
