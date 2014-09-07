@@ -136,7 +136,7 @@ class LinkCommand implements Command {
 }
 
 // TODO: move out into standalone module?
-function copyRange (source: Range, target: Range) {
+function copyRange (source: Range, target: Range): void {
   debug('copyRange(%o, %o)', source, target);
   if (!target) return;
   source.setStart(target.startContainer, target.startOffset);
