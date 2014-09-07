@@ -1,4 +1,10 @@
 
+1.1.1 / 2014-09-07
+==================
+
+ * index: fix failing `queryEnabled()` tests
+ * test: add the `queryEnabled()` tests
+
 1.1.0 / 2014-09-06
 ==================
 
