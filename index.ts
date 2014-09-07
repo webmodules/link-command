@@ -104,18 +104,21 @@ class LinkCommand implements Command {
     if (!range) range = currentRange(this.document);
     if (!range) return false;
 
-    if (this.queryState(range)) {
-      if (range.collapsed) {
-        // WebKit seems to return `false` when a collapsed Range is used.
-        // This makes sense because unlink on an empty selection doesn't actually
-        // work, however, we're using `wordAtCaret` above to ensure that there is
-        // at least some selection. So always return `true` in this case.
-        return true;
-      } else {
-        return this.unlink.queryEnabled(range);
-      }
+    // WebKit seems to return `false` when a collapsed Range is used for "unlink".
+    // This makes sense because unlink on an empty selection doesn't actually
+    // work, however, we're using `wordAtCaret` above to ensure that there is
+    // at least some selection. So always return `true` in this case.
+    //
+    // Opera seems to do the same thing, but for "createLink" instead.
+    // This also makes sense, however we attempt to find the nearest A node when
+    // collapsed and remove the entire thing. So also return `true` there as well.
+    if (range.collapsed) {
+      return true;
     } else {
-      return this.createLink.queryEnabled(range);
+      // When there's an actual selection, we can rely on the native "unlink"
+      // and "createLink" command's `queryEnabled()` implementations.
+      var command: Command = this.queryState(range) ? this.unlink : this.createLink;
+      return command.queryEnabled(range);
     }
   }
 
