@@ -425,6 +425,10 @@ describe('LinkCommand', function () {
 
         var link = new LinkCommand();
         assert(false === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
       });
 
       it('should return `false` when Range is collapsed outside an A', function () {
@@ -445,6 +449,10 @@ describe('LinkCommand', function () {
 
         var link = new LinkCommand();
         assert(false === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
       });
 
       it('should return `true` when Range is inside an A', function () {
@@ -464,6 +472,10 @@ describe('LinkCommand', function () {
 
         var link = new LinkCommand();
         assert(true === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
       });
 
       it('should return `true` when Range is collapsed inside an A', function () {
@@ -484,6 +496,10 @@ describe('LinkCommand', function () {
 
         var link = new LinkCommand();
         assert(true === link.queryState(range));
+
+        // test that the Selection is still cleared
+        sel = window.getSelection();
+        assert.equal(0, sel.rangeCount);
       });
     });
 
