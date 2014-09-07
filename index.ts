@@ -101,8 +101,22 @@ class LinkCommand implements Command {
   }
 
   queryEnabled(range?: Range): boolean {
-    var command: Command = this.queryState(range) ? this.unlink : this.createLink;
-    return command.queryEnabled(range);
+    if (!range) range = currentRange(this.document);
+    if (!range) return false;
+
+    if (this.queryState(range)) {
+      if (range.collapsed) {
+        // WebKit seems to return `false` when a collapsed Range is used.
+        // This makes sense because unlink on an empty selection doesn't actually
+        // work, however, we're using `wordAtCaret` above to ensure that there is
+        // at least some selection. So always return `true` in this case.
+        return true;
+      } else {
+        return this.unlink.queryEnabled(range);
+      }
+    } else {
+      return this.createLink.queryEnabled(range);
+    }
   }
 
   queryState(range?: Range): boolean {
