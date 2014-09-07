@@ -108,26 +108,21 @@ class LinkCommand implements Command {
   queryState(range?: Range): boolean {
     if (!range) range = currentRange(this.document);
     if (!range) return false;
-    //console.log(range);
-    //console.log(range.startContainer, range.endContainer);
 
     var next = range.startContainer;
-    var end = <any>range.endContainer;
+    var end = range.endContainer;
 
-    var iterator = domIterator(next)
-      .revisit(false);
+    var iterator = domIterator(next).revisit(false);
 
     while (next) {
-      //console.log(next); // next textnodes after node
       var a = closest(next, 'a', true);
-      //console.log(a);
-      //if (!closest(next, 'a', true)) {
       if (!a) {
         return false;
       }
       // TODO: move to `node-contains` polyfill module:
       // See: http://compatibility.shwups-cms.ch/en/polyfills/?&id=1
-      if (end.compareDocumentPosition(next) & 16)) break;
+      if (next === end || !!(end.compareDocumentPosition(next) & 16)) break;
+      //if (end.contains(next)) break;
       next = iterator.next(3 /* Node.TEXT_NODE */);
     }
 
