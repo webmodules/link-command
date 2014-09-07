@@ -125,7 +125,9 @@ class LinkCommand implements Command {
       if (!a) {
         return false;
       }
-      if (end.contains(next)) break;
+      // TODO: move to `node-contains` polyfill module:
+      // See: http://compatibility.shwups-cms.ch/en/polyfills/?&id=1
+      if (end.compareDocumentPosition(next) & 16)) break;
       next = iterator.next(3 /* Node.TEXT_NODE */);
     }
 
