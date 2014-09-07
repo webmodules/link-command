@@ -1,4 +1,13 @@
 
+1.1.0 / 2014-09-06
+==================
+
+ * index: add `void` return statement to copyRange()
+ * index: add `Node#contains()` polyfill
+ * index: use "dom-iterator" to implement `queryState()`
+ * test: add Selection still cleared assertions
+ * test: add `queryState()` tests
+
 1.0.1 / 2014-09-05
 ==================
 
