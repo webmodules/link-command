@@ -326,6 +326,48 @@ describe('LinkCommand', function () {
 
     });
 
+    describe('queryEnabled()', function () {
+
+      it('should return `true` when inside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.firstChild, 1);
+        range.setEnd(div.lastChild.firstChild, 5);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled());
+      });
+
+      it('should return `true` when collapsed inside an A', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.firstChild, 4);
+        range.setEnd(div.lastChild.firstChild, 4);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        assert(true === link.queryEnabled());
+      });
+
+    });
+
     describe('queryState()', function () {
 
       it('should return `false` when outside an A', function () {
