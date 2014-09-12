@@ -1,4 +1,9 @@
 
+1.2.0 / 2014-09-12
+==================
+
+ * index: insert a "Link" text node upon a collapsed Range
+
 1.1.1 / 2014-09-07
 ==================
 
