@@ -16,6 +16,7 @@ var wordAtCaret = require('word-at-caret');
 var currentRange = require('current-range');
 var currentSelection = require('current-selection');
 var domIterator = require('dom-iterator');
+var insertNode = require('range-insert-node');
 var debug = require('debug')('link-command');
 
 /**
@@ -83,6 +84,9 @@ class LinkCommand implements Command {
         if (wordRange) {
           debug('found surrounding word: %o', wordRange.toString());
           copyRange(range, wordRange);
+        } else {
+          debug('no surrounding word, inserting text "Link"');
+          insertNode(range, this.document.createTextNode('Link'));
         }
       }
 

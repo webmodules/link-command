@@ -77,6 +77,33 @@ describe('LinkCommand', function () {
         assert.equal('world', sel.getRangeAt(0).toString());
       });
 
+      it('should insert an A node with "Link" text when no content around Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = '<p><br></p>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set up current Selection
+        var range = document.createRange();
+        range.setStart(div.firstChild, 0);
+        range.setEnd(div.firstChild, 0);
+        assert(range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        var link = new LinkCommand();
+        link.execute();
+
+        // test that we have the expected HTML at this point
+        assert.equal('<p><a href="#">Link</a><br></p>', div.innerHTML);
+
+        // test that the current Selection contains the A inner text
+        sel = window.getSelection();
+        assert.equal('Link', sel.getRangeAt(0).toString());
+      });
+
       it('should remove an A node around current Selection', function () {
         div = document.createElement('div');
         div.innerHTML = '<p>hel<a href="#">lo world</a></p>';
