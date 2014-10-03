@@ -431,6 +431,39 @@ describe('LinkCommand', function () {
         assert(true === link.queryEnabled());
       });
 
+      it('should not modify the Selection', function () {
+        div = document.createElement('div');
+        div.innerHTML = 'hello <a href="#">world!</a>';
+        div.setAttribute('contenteditable', 'true');
+        document.body.appendChild(div);
+
+        // set current selection
+        var range = document.createRange();
+        range.setStart(div.lastChild.firstChild, 0);
+        range.setEnd(div.lastChild.firstChild, 4);
+        assert(!range.collapsed);
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        // now we monkey-patch the `addRange()` function to ensure
+        // it doesn't get called
+        var addRange = sel.addRange;
+        sel.addRange = function () {
+          // cleanup
+          sel.addRange = addRange;
+          // must not be called!
+          assert(false, 'selection.addRange() was called');
+        };
+
+        var link = new LinkCommand();
+        link.queryEnabled();
+
+        // cleanup
+        sel.addRange = addRange;
+      });
+
     });
 
     describe('queryEnabled(range: Range)', function () {

@@ -105,8 +105,8 @@ class LinkCommand implements Command {
   }
 
   queryEnabled(range?: Range): boolean {
-    if (!range) range = currentRange(this.document);
-    if (!range) return false;
+    var current = range || currentRange(this.document);
+    if (!current) return false;
 
     // WebKit seems to return `false` when a collapsed Range is used for "unlink".
     // This makes sense because unlink on an empty selection doesn't actually
@@ -116,11 +116,13 @@ class LinkCommand implements Command {
     // Opera seems to do the same thing, but for "createLink" instead.
     // This also makes sense, however we attempt to find the nearest A node when
     // collapsed and remove the entire thing. So also return `true` there as well.
-    if (range.collapsed) {
+    if (current.collapsed) {
       return true;
     } else {
       // When there's an actual selection, we can rely on the native "unlink"
       // and "createLink" command's `queryEnabled()` implementations.
+      // Note that we're passing in the `range` argument that was passed in,
+      // rather than the `current` Range, so that falsey values still fall through
       var command: Command = this.queryState(range) ? this.unlink : this.createLink;
       return command.queryEnabled(range);
     }
