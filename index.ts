@@ -96,7 +96,7 @@ class LinkCommand implements Command {
           var text = this.document.createTextNode('Link');
           insertNode(range, text);
           range.setStart(text, 0);
-          range.setStart(text, 4);
+          range.setEnd(text, 4);
         }
       }
 
