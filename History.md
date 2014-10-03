@@ -1,4 +1,11 @@
 
+1.2.1 / 2014-10-03
+==================
+
+ * index: handle backwards selections
+ * index: use "node-contains"
+ * index: don't modify the Selection in `queryEnabled()`
+
 1.2.0 / 2014-09-12
 ==================
 

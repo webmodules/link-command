@@ -1,6 +1,6 @@
 {
   "name": "link-command",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "\"createLink\" and \"unlink\" native commands packaged as a Command",
   "main": "index.js",
   "scripts": {
