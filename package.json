@@ -35,6 +35,8 @@
     "native-command": "~0.2.0",
     "node-contains": "~1.0.0",
     "range-insert-node": "0.0.2",
+    "selection-is-backward": "~1.0.0",
+    "selection-set-range": "~1.0.0",
     "word-at-caret": "0.1.3"
   },
   "devDependencies": {

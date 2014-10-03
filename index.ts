@@ -11,6 +11,8 @@ import NativeCommand = require('native-command');
  * JavaScript dependencies.
  */
 
+var setRange = require('selection-set-range');
+var isBackward = require('selection-is-backward');
 var contains = require('node-contains');
 var closest = require('component-closest');
 var wordAtCaret = require('word-at-caret');
@@ -48,12 +50,16 @@ class LinkCommand implements Command {
 
   execute(range?: Range, value?: any): void {
     var isSel: boolean = false;
+    var backward: boolean;
+    var selection: Selection;
+
     var sel: Selection = currentSelection(this.document);
     if (null != range && !(range instanceof Range)) {
       value = range;
       range = null;
     }
     if (!range) {
+      backward = isBackward(sel);
       range = currentRange(this.document);
       isSel = true;
     }
@@ -97,8 +103,7 @@ class LinkCommand implements Command {
       // if no Range was explicitly passed in, then augment the current Selection
       // in the case that we modified the range (collapsd), so that native
       // browser selection works out properly after the command is executed.
-      sel.removeAllRanges();
-      sel.addRange(range);
+      setRange(sel, range, backward);
       range = null;
     }
 
