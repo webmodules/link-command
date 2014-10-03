@@ -1,4 +1,10 @@
 
+1.2.2 / 2014-10-03
+==================
+
+ * index: fix failing Opera tests
+ * index: add variable type information in `queryState()`
+
 1.2.1 / 2014-10-03
 ==================
 
