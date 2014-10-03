@@ -138,13 +138,13 @@ class LinkCommand implements Command {
     if (!range) range = currentRange(this.document);
     if (!range) return false;
 
-    var next = range.startContainer;
-    var end = range.endContainer;
+    var next: Node = range.startContainer;
+    var end: Node = range.endContainer;
     var iterator = domIterator(next).revisit(false);
 
     while (next) {
-      var a = closest(next, 'a', true);
-      if (!a) return false;
+      var node: Node = closest(next, 'a', true);
+      if (!node) return false;
       if (contains(end, next)) break;
       next = iterator.next(3 /* Node.TEXT_NODE */);
     }
