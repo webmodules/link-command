@@ -33,6 +33,7 @@
     "debug": "~2.0.0",
     "dom-iterator": "~0.3.0",
     "native-command": "~0.2.0",
+    "node-contains": "~1.0.0",
     "range-insert-node": "0.0.2",
     "word-at-caret": "0.1.3"
   },

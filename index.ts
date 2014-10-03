@@ -11,6 +11,7 @@ import NativeCommand = require('native-command');
  * JavaScript dependencies.
  */
 
+var contains = require('node-contains');
 var closest = require('component-closest');
 var wordAtCaret = require('word-at-caret');
 var currentRange = require('current-range');
@@ -134,18 +135,12 @@ class LinkCommand implements Command {
 
     var next = range.startContainer;
     var end = range.endContainer;
-
     var iterator = domIterator(next).revisit(false);
 
     while (next) {
       var a = closest(next, 'a', true);
-      if (!a) {
-        return false;
-      }
-      // TODO: move to `node-contains` polyfill module:
-      // See: http://compatibility.shwups-cms.ch/en/polyfills/?&id=1
-      if (next === end || !!(end.compareDocumentPosition(next) & 16)) break;
-      //if (end.contains(next)) break;
+      if (!a) return false;
+      if (contains(end, next)) break;
       next = iterator.next(3 /* Node.TEXT_NODE */);
     }
 
