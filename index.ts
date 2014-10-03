@@ -93,7 +93,10 @@ class LinkCommand implements Command {
           copyRange(range, wordRange);
         } else {
           debug('no surrounding word, inserting text "Link"');
-          insertNode(range, this.document.createTextNode('Link'));
+          var text = this.document.createTextNode('Link');
+          insertNode(range, text);
+          range.setStart(text, 0);
+          range.setStart(text, 4);
         }
       }
 
