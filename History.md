@@ -1,4 +1,10 @@
 
+1.2.3 / 2014-10-30
+==================
+
+ * package: update "range-insert-node" to v1.0.3
+ * package: allow any "debug" v2
+
 1.2.2 / 2014-10-03
 ==================
 
