@@ -34,7 +34,7 @@
     "dom-iterator": "~0.3.0",
     "native-command": "~0.2.0",
     "node-contains": "~1.0.0",
-    "range-insert-node": "0.0.2",
+    "range-insert-node": "1.0.3",
     "selection-is-backward": "~1.0.0",
     "selection-set-range": "~1.0.0",
     "word-at-caret": "0.1.3"
