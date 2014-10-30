@@ -30,7 +30,7 @@
     "component-closest": "0.1.4",
     "current-range": "~1.1.0",
     "current-selection": "~1.1.0",
-    "debug": "~2.0.0",
+    "debug": "2",
     "dom-iterator": "~0.3.0",
     "native-command": "~0.2.0",
     "node-contains": "~1.0.0",
